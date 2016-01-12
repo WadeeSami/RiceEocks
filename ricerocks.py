@@ -220,10 +220,11 @@ def group_collide(group , other_object):
         return removed_elements != set([])#still empty ?    
 
 def group_group_collide(missiles , rocks):
+    global score
     rm_missiles = set([])
     for missile in missiles:
         if group_collide(rocks , missile):
-            print "collision"
+            score += 5
             rm_missiles.add(missile)
     missiles.difference_update(rm_missiles)        
 # key handlers to control ship   
@@ -255,9 +256,11 @@ def process_sprite_group(group , canvas):
         element.draw(canvas)
         if element.update():#in case of missiles , if true ,  missile should be removed
             removed_missiles.add(element)
+            
     if group_collide(group , my_ship):
         score -= 5
         lives -= 1
+        my_ship.pos = [WIDTH/2 , HEIGHT/2]#replace the ship
     group.difference_update(removed_missiles)
     #also draw the explosions
     remove_exp = set([])
